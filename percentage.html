@@ -210,13 +210,9 @@ let start=new Date(from);
 let end=new Date(to);
 
 let working=0;
-
 let present=0;
-
 let absent=0;
-
 let holiday=0;
-
 
 while(start<=end){
 
@@ -229,35 +225,58 @@ let day=new Date(date)
 );
 
 
+/* exclude sunday */
+
 if(day=="Sunday"){
 
 holiday++;
 
 }
 
+
+/* exclude leave */
+
+else if(
+attendanceData[date]?.fullDay=="leave"
+){
+
+holiday++;
+
+}
+
+
+/* working day */
+
 else{
 
 working++;
 
-if(attendanceData[date]?.fullDay=="present")
+
+if(
+attendanceData[date]?.fullDay=="present"
+)
+
 present++;
 
-else if(attendanceData[date]?.fullDay=="leave")
-holiday++;
-
 else
+
 absent++;
 
 }
 
-start.setDate(start.getDate()+1);
+
+start.setDate(
+start.getDate()+1
+);
 
 }
+
 
 let percent=
 working==0?0:
 ((present/working)*100)
 .toFixed(2);
+
 
 
 document.getElementById("summaryBox")
@@ -266,6 +285,7 @@ document.getElementById("summaryBox")
 `
 
 <div class="grid">
+
 
 <div>
 
@@ -292,11 +312,24 @@ ${to}
 <div>
 
 <span class="label">
+Working Days :
+</span>
+
+${working}
+
+</div>
+
+
+<div>
+
+<span class="label">
 Total Present :
 </span>
 
 <span class="green">
+
 ${present}
+
 </span>
 
 </div>
@@ -309,7 +342,9 @@ Total Absent :
 </span>
 
 <span class="red">
+
 ${absent}
+
 </span>
 
 </div>
@@ -333,10 +368,13 @@ Attendance Percentage :
 </span>
 
 <span class="red">
+
 ${percent} %
+
 </span>
 
 </div>
+
 
 </div>
 
